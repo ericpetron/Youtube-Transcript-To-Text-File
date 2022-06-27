@@ -3,12 +3,16 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 # Getting the URL
+
+get_fp_from_usr = str(input('What is the file path to the geckodriver? (You can put this in the code manually but for ease it have you input it in) '))
+
 get_yt_url = str(input('Please paste the URL here: '))
 
 # Initializing the webdriver
-ser = Service(r'/Users/ericpetron/Dropbox/SummerJava/geckodriver')
+ser = Service(get_fp_from_usr)
 op = webdriver.FirefoxOptions()
-driver = webdriver.Chrome(service=ser, options=op)
+op.headless = True
+driver = webdriver.Firefox(service=ser, options=op)
 
 # Giving webdriver time to load browser
 time.sleep(2)
@@ -16,6 +20,8 @@ time.sleep(2)
 driver.get(get_yt_url)
 #
 time.sleep(7)
+yt_title = driver.find_element(by=By.CSS_SELECTOR, value='yt-formatted-string.ytd-video-primary-info-renderer:nth-child(1)')
+yt_title = yt_title.text
 triple_dot_button = driver.find_element(by=By.CSS_SELECTOR, value='ytd-menu-renderer.ytd-video-primary-info-renderer > yt-icon-button:nth-child(3) > button:nth-child(1)')
 triple_dot_button.click()
 time.sleep(3)
@@ -70,8 +76,8 @@ list_of_text_from_tran = convert_raw_tran_to_text_tran(raw_list)
 
 def writing_to_a_text_file(list_of_text):
     
-    write_to_file = open('yt_transcipt.txt', 'w')
-
+    write_to_file = open('yt_transcipt.txt', 'a')
+    write_to_file.write(yt_title)
     for i in range(3):
         # This is used to separate the differences in the transcripts 
         write_to_file.write('\n')
@@ -94,11 +100,13 @@ print('All done!')
 
 
 
-# CSS formatting ytd-transcript-segment-renderer.style-scope:nth-child(1) > div:nth-child(1) > yt-formatted-string:nth-child(2)
+# ytd-transcript-segment-renderer.style-scope:nth-child(1) > div:nth-child(1) > yt-formatted-string:nth-child(2)
 
 # ytd-transcript-segment-renderer.style-scope:nth-child(2) > div:nth-child(1) > yt-formatted-string:nth-child(2)
 
 # ytd-transcript-segment-renderer.style-scope:nth-child(3) > div:nth-child(1) > yt-formatted-string:nth-child(2)
+
+
 
 
 
